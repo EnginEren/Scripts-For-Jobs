@@ -1,0 +1,74 @@
+#!/bin/zsh
+#
+#
+# This is a modified SGE batch script
+
+# request Bourne shell as shell for job
+#$ -S /bin/zsh
+
+#
+# 
+JOBNAME=hera_only-14p-13p+ZFbar
+
+echo "$QUEUE $JOB $HOST $JOBNAME"
+
+export MYDIR=/afs/desy.de/group/herafitter/users/eren
+export NFS=/nfs/dust/cms/user/eren
+
+md=$(date +"%T-%m-%d-%Y")
+mkdir $NFS/pbs/$JOBNAME$JOB.$md
+cd $NFS/pbs/$JOBNAME$JOB.$md
+
+# first copy all what we need: 
+cp -r $MYDIR/herafitter-1.1.1/bin .
+ln -s $MYDIR/herafitter-1.1.1/datafiles datafiles
+ln -s $MYDIR/herafitter-1.1.1/theoryfiles theoryfiles
+cp $MYDIR/herafitter-1.1.1/* .
+mkdir output
+rm *out -f
+rm *eps -f
+rm *tex -f
+rm *pdf -f
+
+
+#!/bin/zsh
+#
+# request Bourne shell as shell for job
+#$ -S /bin/zsh
+# 
+
+# setup
+echo "setting up enviroment"
+echo
+# compiler
+. /afs/cern.ch/sw/lcg/contrib/gcc/4.6/x86_64-slc6-gcc46-opt/setup.sh
+
+# root
+cd  /afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.14/x86_64-slc6-gcc46-opt/root/
+.  /afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.14/x86_64-slc6-gcc46-opt/root/bin/thisroot.sh
+cd -
+
+export PATH=$MYDIR/hoppet/bin/:$PATH
+export PATH=$MYDIR/lhapdf/bin/:$PATH
+export PATH=$MYDIR/applgrid/bin/:$PATH
+
+export QCDNUM_ROOT=$MYDIR/qcdnum-17-00-06
+
+export LD_LIBRARY_PATH=$MYDIR/hoppet/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$MYDIR/lhapdf/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$MYDIR/applgrid/lib/:$LD_LIBRARY_PATH
+
+echo $LD_LIBRARY_PATH
+
+echo '--------------------------'
+echo '          done            '
+echo '--------------------------'
+echo
+
+# run
+bin/FitPDF > out.log
+
+
+echo "done"
+
+
