@@ -8,6 +8,7 @@ LIST=$(ls $PBS | grep "$1")
 
 #Loop and print every specified output directories
 for job in $LIST; do
+	echo $job
 	cat $PBS/$job/output/parsout_1 | grep "$1"
 done
 
