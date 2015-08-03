@@ -2,6 +2,7 @@
 #
 #
 # This is a modified SGE batch script
+# run with:   qsub -l h_vmem=3G -l h_rt=24:00:00 -l os=sld6 -cwd run_fit.sh
 
 # request Bourne shell as shell for job
 #$ -S /bin/zsh
@@ -16,14 +17,14 @@ export MYDIR=/afs/desy.de/group/herafitter/users/eren
 export NFS=/nfs/dust/cms/user/eren
 
 md=$(date +"%T-%m-%d-%Y")
-mkdir $NFS/pbs/$JOBNAME$JOB.$md
-cd $NFS/pbs/$JOBNAME$JOB.$md
+mkdir $NFS/pbs/WA/$JOBNAME$JOB.$md
+cd $NFS/pbs/WA/$JOBNAME$JOB.$md
 
 # first copy all what we need: 
-cp -r $MYDIR/herafitter-1.1.1/bin .
-ln -s $MYDIR/herafitter-1.1.1/datafiles datafiles
-ln -s $MYDIR/herafitter-1.1.1/theoryfiles theoryfiles
-cp $MYDIR/herafitter-1.1.1/* .
+cp -r $MYDIR/WAysm/herafitter-1.1.1/bin .
+ln -s $MYDIR/WAysm/herafitter-1.1.1/datafiles datafiles
+ln -s $MYDIR/WAysm/herafitter-1.1.1/theoryfiles theoryfiles
+cp $MYDIR/WAysm/herafitter-1.1.1/* .
 mkdir output
 rm *out -f
 rm *eps -f
